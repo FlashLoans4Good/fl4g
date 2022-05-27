@@ -1,0 +1,10 @@
+.header{
+    display:flex;
+    justify-content:space-between;
+    width: 35vh;
+    /* margin: 20px 20px; */
+    font-size: 30px;
+    font-weight: bold;
+    
+
+}

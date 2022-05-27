@@ -1,0 +1,13 @@
+*body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* font-family: "IBM Plex Sans Thai Looped", sans-serif; */
+}
+
+.App {
+  /* text-align: center; */
+  width: 80vw;
+  align-items: center;
+  margin: 80px 170px;
+}
