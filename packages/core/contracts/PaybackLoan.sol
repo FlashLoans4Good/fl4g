@@ -41,6 +41,11 @@ abstract contract FlashLoanSimpleReceiverBase is IFlashLoanSimpleReceiver {
 contract PaybackLoan is FlashLoanSimpleReceiverBase {
     using SafeMath for uint256;
 
+    // for flashLoanSimple
+    // single asset 
+    // USDC address - https://mumbai.polygonscan.com/token/0x9aa7fec87ca69695dd1f879567ccf49f3ba417e2
+    address immutable USDC_ASSET = 0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2; 
+
     constructor(IPoolAddressesProvider _addressProvider, IFaucet _faucet) FlashLoanSimpleReceiverBase(_addressProvider, _faucet) {}
 
     /**
@@ -61,10 +66,10 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
         //
         // This contract now has the funds requested.
         // Business logic - note: assume subscriber has a debt position opened on Aave, deposited <= 1ETH, and collateralised. 
-
         // 1. MaxBorrow USDC from AaveV3 
         // 2. (Manually monitor health score for demo) Run script to cause health score to drop to liquidation threshold subscriber set
         // 3. Execute flashLoanSimple
+
         // 4. Repay portion of subscriber's loan to boost health score with aUSDC
         // 5. Transfer collected collateral to subscribers wallet (Collateral - transaction fees)  
         // 6. Repay to Aave (Collateral Balance - flashloaned amount + premium). Note: ensure enough funds in contract
@@ -96,4 +101,20 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
             referralCode
         );
     }
+
+    // Implement from IPool
+    function flashLoanSimple(
+    address receiverAddress,
+    address asset,
+    uint256 amount,
+    bytes calldata params,
+    uint16 referralCode
+  ) external {
+        receiverAddress = address(this);
+        asset = _asset;
+        // getUserAccountData
+        amount = // how much do i owe? how much do i need to borrow? 
+
+
+  }
 }
