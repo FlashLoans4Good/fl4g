@@ -44,7 +44,10 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
     // for flashLoanSimple
     // single asset 
     // USDC address - https://mumbai.polygonscan.com/token/0x9aa7fec87ca69695dd1f879567ccf49f3ba417e2
-    address immutable USDC_ASSET = 0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2; 
+    address immutable USDC_ASSET = 0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2;
+    // test subscriber devtest
+    address constant testaddress = 0xf1c463aB9791911D7CF896BFB994cB157E6d441B;
+
 
     /// 1. Called first. 
     constructor(IPoolAddressesProvider _addressProvider, IFaucet _faucet) FlashLoanSimpleReceiverBase(_addressProvider, _faucet) {}
@@ -58,16 +61,15 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
         address asset,
         uint256 amount
     ) public {
+        // when flashLoanSimple finishes executing funds are sent to receiverAddress
         address receiverAddress = address(this);
         bytes memory params = "";
         uint16 referralCode = 0;
-        // defines the amount of USDC we want to borrow
-        // note _amount means this is an internal function and only exists within this function
-        uint256 memory _amount = amount; 
 
         // Calculate balance of contract
         // do a check to make sure balance sufficient
 
+        // amount comes from test-aave-flash-loan
         POOL.flashLoanSimple(
             receiverAddress,
             asset,
@@ -104,8 +106,29 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
         // 3. Execute flashLoanSimple
 
         // 4. Repay portion of subscriber's loan to boost health score with aUSDC
-        // Fill in arguments with appropriate values.
-        Pool.repayWithATokens(address asset,uint256 amount,uint256 interestRateMode);
+
+        // (1) First attempt to repay loan with user's aTokens ie. aUSDC 
+        // Interest rate mode of the debt position
+        // 1 - stable
+        // 2 - variable
+        uint256 interestRateMode = 2;
+        // do i need an approval here? 
+        // uint256.max what does this do? see IPool.sol
+        // type(uint256).max repays the whole debt 
+        // returns the final amount repaid. 
+        uint256 amountRepaid = POOL.repayWithATokens(asset, type(uint256).max, interestRateMode);
+        
+        
+        // check health factor <= 1.1 
+        (, , , , , uint256 healthFactor) = POOL.getUserAccountData(testaddress);
+        if(amountRepaid > 0 && healthFactor < 1.1) {
+            executeFlashLoan(asset, amount);
+            break;
+        }
+        // throw error emit event
+        // (2) 
+
+
         // 5. Transfer collected collateral to subscribers wallet (Collateral - transaction fees)  
         // 6. Repay to Aave (Collateral Balance - flashloaned amount + premium). Note: ensure enough funds in contract
         
@@ -117,20 +140,4 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
 
         return true;
     }
-
-    // Implement from IPool
-    function flashLoanSimple(
-    address receiverAddress,
-    address asset,
-    uint256 amount,
-    bytes calldata params,
-    uint16 referralCode
-  ) external {
-        receiverAddress = address(this);
-        asset = _asset;
-        // getUserAccountData
-        amount = // how much do i owe? how much do i need to borrow? 
-
-
-  }
 }
