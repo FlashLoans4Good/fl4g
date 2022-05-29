@@ -12,9 +12,18 @@ Flashloans4Good uses flash loans as a force for good to protect that money by mi
 
 # Build & Run platform (locally)
 
-
 # Deploy to Optimism
-
 
 # Testing procedure 
 
+## Contract Addresses
+
+### PoolAddressesProvider
+
+- Mumbai V3: 0x5343b5bA672Ae99d627A1C87866b8E53F47Db2E6
+- Optimistic Kovan V3: 0xD15d36975A0200D11B8a8964F4F267982D2a1cFe
+
+### Aave Faucets
+
+- Mumbai V3: 0xc1eB89DA925cc2Ae8B36818d26E12DDF8F8601b0
+- Optimistic Kovan V3: 0xed97140B58B97FaF70b70Ae26714Aa59705c74aE
