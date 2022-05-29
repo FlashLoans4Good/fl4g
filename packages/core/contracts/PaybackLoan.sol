@@ -82,8 +82,10 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
 
         return true;
     }
-
-    // This function is executed in Remix - specify address (eg. USDC smart contract address, amount)
+    /// This function borrows a single asset ie. USDC 
+    /// @param asset is USDC 
+    /// @param amount is TBD 
+    /// @dev add logic for repaying loan as well? 
     function executeFlashLoan(
         address asset,
         uint256 amount
