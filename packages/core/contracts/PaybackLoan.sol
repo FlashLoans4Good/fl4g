@@ -46,11 +46,44 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
     // USDC address - https://mumbai.polygonscan.com/token/0x9aa7fec87ca69695dd1f879567ccf49f3ba417e2
     address immutable USDC_ASSET = 0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2; 
 
+    /// 1. Called first. 
     constructor(IPoolAddressesProvider _addressProvider, IFaucet _faucet) FlashLoanSimpleReceiverBase(_addressProvider, _faucet) {}
 
-    /**
-        This function is called after your contract has received the flash loaned amount
-     */
+    /// 2. Called 2nd after constructor
+    /// function borrows a single asset ie. USDC 
+    /// @param asset is USDC 
+    /// @param amount is Amount of asset being requested for flash borrow  
+    /// @dev add logic for repaying loan as well? 
+    function executeFlashLoan(
+        address asset,
+        uint256 amount
+    ) public {
+        address receiverAddress = address(this);
+        bytes memory params = "";
+        uint16 referralCode = 0;
+        // defines the amount of USDC we want to borrow
+        // note _amount means this is an internal function and only exists within this function
+        uint256 memory _amount = amount; 
+
+        // Calculate balance of contract
+        // do a check to make sure balance sufficient
+
+        POOL.flashLoanSimple(
+            receiverAddress,
+            asset,
+            amount,
+            params,
+            referralCode
+        );
+    }
+
+    /// 3. Called third
+    /// This function is called by Aave after the POOL.flashLoanSimple call 
+    /// When completed this contract now has received the flash loaned amount
+    /// @param asset in this case USDC 
+    /// @param amount the amount that we borrowed
+    /// @param premium fees to pay back for borrowing
+    /// @param initiator the contract that executed the flash loan in this case "this contract"
     function executeOperation(
         address asset,
         uint256 amount,
@@ -63,14 +96,16 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
         returns (bool)
     {
 
-        //
-        // This contract now has the funds requested.
+        // This contract now has the funds requested from the executeFlashLoan function
         // Business logic - note: assume subscriber has a debt position opened on Aave, deposited <= 1ETH, and collateralised. 
-        // 1. MaxBorrow USDC from AaveV3 
+        // 1. This contract calls 
         // 2. (Manually monitor health score for demo) Run script to cause health score to drop to liquidation threshold subscriber set
+
         // 3. Execute flashLoanSimple
 
         // 4. Repay portion of subscriber's loan to boost health score with aUSDC
+        // Fill in arguments with appropriate values.
+        Pool.repayWithATokens(address asset,uint256 amount,uint256 interestRateMode);
         // 5. Transfer collected collateral to subscribers wallet (Collateral - transaction fees)  
         // 6. Repay to Aave (Collateral Balance - flashloaned amount + premium). Note: ensure enough funds in contract
         
@@ -81,27 +116,6 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
         IERC20(asset).approve(address(POOL), amountOwed);
 
         return true;
-    }
-    /// This function borrows a single asset ie. USDC 
-    /// @param asset is USDC 
-    /// @param amount is TBD 
-    /// @dev add logic for repaying loan as well? 
-    function executeFlashLoan(
-        address asset,
-        uint256 amount
-    ) public {
-        address receiverAddress = address(this);
-
-        bytes memory params = "";
-        uint16 referralCode = 0;
-
-        POOL.flashLoanSimple(
-            receiverAddress,
-            asset,
-            amount,
-            params,
-            referralCode
-        );
     }
 
     // Implement from IPool
