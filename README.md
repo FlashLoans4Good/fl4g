@@ -27,3 +27,10 @@ Flashloans4Good uses flash loans as a force for good to protect that money by mi
 
 - Mumbai V3: 0xc1eB89DA925cc2Ae8B36818d26E12DDF8F8601b0
 - Optimistic Kovan V3: 0xed97140B58B97FaF70b70Ae26714Aa59705c74aE
+
+### Gelato Network Ops
+
+- Mumbai V3: 0xB3f5503f93d5Ef84b06993a1975B9D21B962892F
+
+### Gelato Network TaskTreasury
+- Mumbai V3: 0x527a819db1eb0e34426297b03bae11F2f8B3A19E
