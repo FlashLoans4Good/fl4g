@@ -28,18 +28,27 @@ interface IResolver {
 
 contract PaybackLoanResolver is IResolver, OpsReady{
 
-    Simple simple;
+    PaybackLoan paybackLoan;
     address public userAccount;
+    address public owner;
+    //4000 USDC, make dynamic later
+    uint256 amount = 4000*1000000;
     IPool public immutable POOL;
     uint256 constant HEALTH_FACTOR_LIQUIDATION_THRESHOLD = 1e18;
     uint256 healthTreshold;
     address public USDC = 0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2; 
 
-    constructor(IPoolAddressesProvider provider, address user, address _ops, address executedAddress, uint256 _healthTreshold) OpsReady(_ops){
-        simple = Simple(executedAddress);
+    constructor(IPoolAddressesProvider provider, address user, address _ops, PaybackLoan _paybackLoan, uint256 _healthTreshold) OpsReady(_ops){
+        paybackLoan = _paybackLoan;
         POOL = IPool(provider.getPool());
         userAccount = user;
         healthTreshold = _healthTreshold;
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "FlashLoanResolver: onlyOwner");
+        _;
     }
 
     // Check if user healthFactor is below 1.1
@@ -49,16 +58,17 @@ contract PaybackLoanResolver is IResolver, OpsReady{
         (, , , ,,healthFactor) = POOL.getUserAccountData(userAccount);
         // Execute when healthFactor < 1.1
         // Also healthFactor that we use as a threeshold could be a parameter
-        canExec = healthFactor < HEALTH_FACTOR_LIQUIDATION_THRESHOLD*healthTreshold/10;
+        canExec = healthFactor < HEALTH_FACTOR_LIQUIDATION_THRESHOLD*healthTreshold/100;
         //Change this later to the flashLoan function
         execPayload = abi.encodeWithSelector(
             PaybackLoanResolver.callFlashLoan.selector,
-            uint256(healthFactor),
-            address(USDC)
+            address(USDC),
+            uint256(amount)
         );
     }
 
-    function callFlashLoan(uint256 _amount, address _val) external onlyOps {
+    //Gelato executes this function
+    function callFlashLoan(address _asset, uint256 _amount) external onlyOps {
         uint256 fee;
         address feeToken;
 
@@ -67,11 +77,33 @@ contract PaybackLoanResolver is IResolver, OpsReady{
         _transfer(fee, feeToken);
 
         //Change to flashLoan
-        simple.call(_amount, _val);
+        paybackLoan.executeFlashLoan(_asset, _amount);
     }
 
-        receive() external payable {
-        }
+    //Set healthTreshold to _healthTreshold/100
+    function setHealthTreshold(uint16 _healthTreshold) public onlyOwner{
+        healthTreshold = _healthTreshold;
+    }
+
+    //Returns health factor with two decimal places
+    function getCurrentTreshold() public view returns(uint256){
+        return healthTreshold;
+    }
+
+    function updateOwner(address _owner) public onlyOwner{
+        owner = _owner;
+    }
+
+    function setPaybackFlashLoanAddress(PaybackLoan _paybackLoan) public onlyOwner{
+        paybackLoan = _paybackLoan;
+    }
+
+    function setUser(address _user) public onlyOwner{
+        userAccount = _user;
+    }
+
+    receive() external payable {
+    }
 
 
 }
