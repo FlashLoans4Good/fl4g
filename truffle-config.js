@@ -1,6 +1,6 @@
- const HDWalletProvider = require('@truffle/hdwallet-provider');
- const fs = require('fs');
- const mnemonic = fs.readFileSync(".env").toString().trim();
+
+require("dotenv").config();
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 module.exports = {
   /**
@@ -29,7 +29,11 @@ module.exports = {
 
     // https://docs.polygon.technology/docs/develop/truffle/
     matic: {
-      provider: () => new HDWalletProvider(MNEMONIC, `https://rpc-mumbai.maticvigil.com`),
+      provider: () => 
+      new HDWalletProvider(
+        process.env.MNEMONIC,
+        `https://polygon-mumbai.infura.io/v3/${process.env.INFURA_API_KEY}`
+      ),
       network_id: 80001,
       confirmations: 2,
       timeoutBlocks: 200,
