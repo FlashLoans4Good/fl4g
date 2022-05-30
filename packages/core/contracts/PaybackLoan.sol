@@ -121,9 +121,8 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
         
         // check health factor <= 1.1 
         (, , , , , uint256 healthFactor) = POOL.getUserAccountData(testaddress);
-        if(amountRepaid > 0 && healthFactor < 1.1) {
+        if(amountRepaid > 0 && healthFactor < 1) {
             executeFlashLoan(asset, amount);
-            break;
         }
         // throw error emit event
         // (2) 
