@@ -1,0 +1,33 @@
+.image_class{
+    height: 10vh;
+    display: block;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top: auto;
+    width:20%;
+}
+.landingpage_main{
+    /* margin: 300px 700px 100px; */
+    width: 100%;
+    /* padding: 10px; */
+    align-items: center;
+    text-align: center;
+    margin-top: 150px;
+    font-size: 30px;
+
+
+}
+.title{
+    color:blue;
+}
+.landingpage_logout{
+    align-items: center;
+    text-align: center;
+    margin-top: 150px;
+    font-size: 30px;
+
+}
+.username{
+    color:red;
+    font-weight: bold;
+}
