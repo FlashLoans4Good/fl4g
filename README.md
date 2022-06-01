@@ -11,6 +11,7 @@ Flashloans4Good uses flash loans as a force for good to protect that money by mi
 
 
 # Build & Run platform (locally)
+## Launch frontend
 1. cd packages/core/interface
 2. npm install
 3. npm run 
@@ -23,10 +24,10 @@ Flashloans4Good uses flash loans as a force for good to protect that money by mi
 
 # Testing procedure 
 1. Install Ganache refer > https://trufflesuite.com/ganache/
-2. Once installed launch > create new workspace or quickstart (in this case, we have a workspace called ETH SHANGHAI 2022 HACKATHON)  
-3. Ensure RPC server is pointing to port 8545 and that matches the port in truffle-config.js
-2. cd packages/core
-3. truffle test test/test-aave-flash-loan.js
+2. Once installed Launch (aka start) > create new workspace or quickstart (in this case, we have a workspace called ETH SHANGHAI 2022 HACKATHON)  
+3. Ensure RPC server is pointing to port 8545 and that matches the development network port in truffle-config.js
+4. cd packages/core
+5. truffle test test/test-aave-flash-loan.js
 
 ## Contract Addresses
 
