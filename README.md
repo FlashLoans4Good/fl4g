@@ -61,7 +61,7 @@ https://mumbai.polygonscan.com/address/0xA5F241e14e75e62390a310D3396421D5Dd85d31
 - Mumbai V3: 0x527a819db1eb0e34426297b03bae11F2f8B3A19E
 
 ## Public Netlify URL 
-https://fl4g.netlify.app
+https://fl4gs.netlify.app/
 
 ## Incomplete Future developments
 - Frontend: wallet integration, integrate new AaveV3 borrower subgraph and display 
