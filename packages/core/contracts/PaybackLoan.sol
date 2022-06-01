@@ -46,7 +46,12 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
     // USDC address - https://mumbai.polygonscan.com/token/0x9aa7fec87ca69695dd1f879567ccf49f3ba417e2
     address immutable USDC_ASSET = 0x9aa7fEc87CA69695Dd1f879567CcF49F3ba417E2;
     // test subscriber devtest
-    address constant testaddress = 0xf1c463aB9791911D7CF896BFB994cB157E6d441B;
+    address constant testaddress = 0xE0A53921b3FB731c4EeB0D3Fb9f2Ad1057F6E650;//0xf1c463aB9791911D7CF896BFB994cB157E6d441B;
+    uint256 constant HEALTH_FACTOR_LIQUIDATION_THRESHOLD = 1e18;
+
+    event Repaid(uint256 val);
+    event COL(uint256 amount);
+
 
 
     /// 1. Called first. 
@@ -110,18 +115,21 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
         // (1) First attempt to repay loan with user's aTokens ie. aUSDC 
         // Interest rate mode of the debt position
         // 1 - stable
-        // 2 - variable
+        // 2 - variableg
         uint256 interestRateMode = 2;
         // do i need an approval here? 
         // uint256.max what does this do? see IPool.sol
         // type(uint256).max repays the whole debt 
         // returns the final amount repaid. 
         uint256 amountRepaid = POOL.repayWithATokens(asset, type(uint256).max, interestRateMode);
-        
+        // emit Repaid(amountRepaid);
+        // uint256 collateralAmount = POOL.withdraw(asset, type(uint).max, address(this));
+        // IERC20(asset).transferFrom(testaddress, address(this), amount+premium);
+        //emit COL(collateralAmount);
         
         // check health factor <= 1.1 
         (, , , , , uint256 healthFactor) = POOL.getUserAccountData(testaddress);
-        if(amountRepaid > 0 && healthFactor < 1) {
+        if(amountRepaid > 0 && healthFactor < HEALTH_FACTOR_LIQUIDATION_THRESHOLD*11/10) {
             executeFlashLoan(asset, amount);
         }
         // throw error emit event
