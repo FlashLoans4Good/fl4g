@@ -11,22 +11,32 @@ Flashloans4Good uses flash loans as a force for good to protect that money by mi
 
 
 # Build & Run platform (locally)
+1. cd packages/core/interface
+2. npm install
+3. npm run 
 
-# Deploy to Optimism
+# Deploy to Polygon Mumbai 
+1. Install truffle with npm install -g truffle
+2. Add matic network to truffle-config.js > refer https://docs.polygon.technology/docs/develop/truffle/
+3. Create .env file with INFURA and MNEMONIC info > refer https://forum.openzeppelin.com/t/testnet-deployment-error-could-not-create-addresses-from-your-mnemonic-or-private-key-s/4461
+4. truffle migrate --network matic
 
 # Testing procedure 
+1. Install Ganache refer > https://trufflesuite.com/ganache/
+2. Once installed launch > create new workspace or quickstart (in this case, we have a workspace called ETH SHANGHAI 2022 HACKATHON)  
+3. Ensure RPC server is pointing to port 8545 and that matches the port in truffle-config.js
+2. cd packages/core
+3. truffle test test/test-aave-flash-loan.js
 
 ## Contract Addresses
 
 ### PoolAddressesProvider
 
 - Mumbai V3: 0x5343b5bA672Ae99d627A1C87866b8E53F47Db2E6
-- Optimistic Kovan V3: 0xD15d36975A0200D11B8a8964F4F267982D2a1cFe
 
 ### Aave Faucets
 
 - Mumbai V3: 0xc1eB89DA925cc2Ae8B36818d26E12DDF8F8601b0
-- Optimistic Kovan V3: 0xed97140B58B97FaF70b70Ae26714Aa59705c74aE
 
 ### Gelato Network Ops
 
