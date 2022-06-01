@@ -8,26 +8,40 @@ Flashloans4Good uses flash loans as a force for good to protect that money by mi
 # Architecture 
 ![Architecture Diagram](https://github.com/FlashLoans4Good/fl4g/blob/6dbd0f58b127b809356ffd48a0b14e1f8c9fd12f/diagrams/architectureV2.1.jpeg)
 
+# Tech Stack
+- Solidity/Truffle/Infura/Netlify
+- React/Javascript/CSS/HTML
 
 
 # Build & Run platform (locally)
 ## Launch frontend
-1. cd packages/core/interface
-2. npm install
-3. npm run 
+1. `cd packages/core/interface`
+2. `npm install`
+3. `npm start`
+
+## Deploy to Netlify
+1. `npm install netlify-cli -g` *Note: if fails with post-install error refer > https://answers.netlify.com/t/netlify-cli-fails-to-install/34508/4* or try using a different version `npm i netlify-cli@10.3.3`
+2. `npm run build`
+3. `netlify deploy`
 
 # Deploy to Polygon Mumbai 
-1. Install truffle with npm install -g truffle
+1. Install truffle with `npm install -g truffle`
 2. Add matic network to truffle-config.js > refer https://docs.polygon.technology/docs/develop/truffle/
 3. Create .env file with INFURA and MNEMONIC info > refer https://forum.openzeppelin.com/t/testnet-deployment-error-could-not-create-addresses-from-your-mnemonic-or-private-key-s/4461
-4. truffle migrate --network matic
+4. `truffle migrate --network matic`
+
+**FlashLoan Smart Contract**
+https://mumbai.polygonscan.com/tx/0x61f5bec2f34c548a1fcf1f7b4e43233764f5e356222eb85912c1fa63482babcd
+
+**Gelato Resolver Contracts**
+https://mumbai.polygonscan.com/address/0xA5F241e14e75e62390a310D3396421D5Dd85d313
 
 # Testing procedure 
 1. Install Ganache refer > https://trufflesuite.com/ganache/
 2. Once installed Launch (aka start) > create new workspace or quickstart (in this case, we have a workspace called ETH SHANGHAI 2022 HACKATHON)  
 3. Ensure RPC server is pointing to port 8545 and that matches the development network port in truffle-config.js
-4. cd packages/core
-5. truffle test test/test-aave-flash-loan.js
+4. `cd packages/core`
+5. `truffle test test/test-aave-flash-loan.js`
 
 ## Contract Addresses
 
@@ -45,3 +59,11 @@ Flashloans4Good uses flash loans as a force for good to protect that money by mi
 
 ### Gelato Network TaskTreasury
 - Mumbai V3: 0x527a819db1eb0e34426297b03bae11F2f8B3A19E
+
+## Public Netlify URL 
+https://fl4g.netlify.app
+
+## Incomplete Future developments
+- Frontend: wallet integration, integrate new AaveV3 borrower subgraph and display 
+- Backend: Working with Aave, Gelato, and DeFiSaver teams to fix flash loan repayments
+- Deploy to IPFS (workaround deployed to Netlify). 
