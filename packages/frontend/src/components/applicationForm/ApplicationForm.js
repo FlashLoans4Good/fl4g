@@ -22,7 +22,7 @@ const Application_Form = () => {
                     </div>
                     <div>
 
-                        <img className='arrow' src={arrow} alt="no-arrow-image" srcset="" />
+                        <img className='arrow' src={arrow} srcset="" />
                     </div>
                     <div>Current Liquidation Threshold</div>
                 </div>

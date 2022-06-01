@@ -1,13 +1,13 @@
 
 import './App.css';
-import Application_Form from './components/application_form/Application_Form';
+import ApplicationForm from './components/applicationForm/ApplicationForm';
 import Header from './components/header/Header';
 
 function App() {
   return (
     <div className="App">
       <Header />
-      <Application_Form />
+      <ApplicationForm />
     </div>
   );
 }
