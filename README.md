@@ -6,7 +6,7 @@ One of the biggest problems in decentralised finance (DeFi) today is market vola
 Flashloans4Good uses flash loans as a force for good to protect that money by minimising collateral losses from costly liquidations. These users want to utilise DeFi to borrow with the goal of improving their lives in some way. They take on good debt such as to pay for education, fund a business, or own a home.  We strongly believe that by simplifying the user experience and by minimising collateral losses due to liquidations this can help to drive the mass adoption of DeFi.  
 
 # Architecture 
-![Architecture Diagram](https://github.com/FlashLoans4Good/fl4g/blob/d69918d8d0ac19e09740d91d81f4c2af7784c37b/diagrams/architectureV2.0.jpeg)
+![Architecture Diagram](https://github.com/FlashLoans4Good/fl4g/blob/6dbd0f58b127b809356ffd48a0b14e1f8c9fd12f/diagrams/architectureV2.1.jpeg)
 
 
 
