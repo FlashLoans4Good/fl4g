@@ -21,8 +21,7 @@ const Application_Form = () => {
 
                     </div>
                     <div>
-
-                        <img className='arrow' src={arrow} srcset="" />
+                        <img className='arrow' src={arrow} alt="" srcset="" />
                     </div>
                     <div>Current Liquidation Threshold</div>
                 </div>
