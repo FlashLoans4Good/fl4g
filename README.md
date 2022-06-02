@@ -63,6 +63,10 @@ https://mumbai.polygonscan.com/address/0xA5F241e14e75e62390a310D3396421D5Dd85d31
 ## Public Netlify URL 
 https://fl4gs.netlify.app/
 
+## Information
+- Created at: [ETH Shanghai 2022 Hackathon](https://gitcoin.co/hackathon/ethshanghai?) 
+- Slides: [Presentation Slides](https://drive.google.com/file/d/1qcS78KgnAwH2Ok_eynOlkeCHgZVS_q7I/view?usp=sharing)
+
 ## Incomplete Future developments
 - Frontend: wallet integration, integrate new AaveV3 borrower subgraph and display 
 - Backend: Working with Aave, Gelato, and DeFiSaver teams to fix flash loan repayments
