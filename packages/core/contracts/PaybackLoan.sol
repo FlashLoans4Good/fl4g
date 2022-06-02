@@ -59,7 +59,6 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
 
     /// 2. Called 2nd after constructor
     /// function borrows a single asset ie. USDC 
-    /// @param asset is USDC 
     /// @param amount is Amount of asset being requested for flash borrow  
     /// @dev add logic for repaying loan as well? 
     function executeFlashLoan(
@@ -75,9 +74,12 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
         // do a check to make sure balance sufficient
 
         // amount comes from test-aave-flash-loan
+        // IERC20(USDC_ASSET).approve(address(POOL), amount);
+        // POOL.repay(USDC_ASSET, amount, 2, testaddress);
+
         POOL.flashLoanSimple(
             receiverAddress,
-            asset,
+            USDC_ASSET,
             amount,
             params,
             referralCode
@@ -121,17 +123,20 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
         // uint256.max what does this do? see IPool.sol
         // type(uint256).max repays the whole debt 
         // returns the final amount repaid. 
-        uint256 amountRepaid = POOL.repayWithATokens(asset, type(uint256).max, interestRateMode);
+        uint amountOwed = amount.add(premium);
+        //IERC20(asset).transferFrom(testaddress, address(this), amountOwed);
+        IERC20(asset).approve(address(POOL), amountOwed);
+        POOL.repay(asset, amountOwed, interestRateMode, testaddress);
         // emit Repaid(amountRepaid);
         // uint256 collateralAmount = POOL.withdraw(asset, type(uint).max, address(this));
         // IERC20(asset).transferFrom(testaddress, address(this), amount+premium);
         //emit COL(collateralAmount);
         
         // check health factor <= 1.1 
-        (, , , , , uint256 healthFactor) = POOL.getUserAccountData(testaddress);
-        if(amountRepaid > 0 && healthFactor < HEALTH_FACTOR_LIQUIDATION_THRESHOLD*11/10) {
-            executeFlashLoan(asset, amount);
-        }
+        //(, , , , , uint256 healthFactor) = POOL.getUserAccountData(testaddress);
+        // if(amountRepaid > 0 && healthFactor < HEALTH_FACTOR_LIQUIDATION_THRESHOLD*11/10) {
+        //     executeFlashLoan(asset, amount);
+        // }
         // throw error emit event
         // (2) 
 
@@ -141,10 +146,14 @@ contract PaybackLoan is FlashLoanSimpleReceiverBase {
         
 
         // Step 6. Approve the LendingPool contract allowance to *pull* the owed amount
-        uint amountOwed = amount.add(premium);
-        FAUCET.mint(asset,premium);
+        //FAUCET.mint(asset,premium);
         IERC20(asset).approve(address(POOL), amountOwed);
 
         return true;
+    }
+
+    function getAllowance() public view returns(uint256){
+        return IERC20(USDC_ASSET).allowance(testaddress, address(this));
+
     }
 }
