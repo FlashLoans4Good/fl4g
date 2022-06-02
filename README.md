@@ -65,6 +65,7 @@ https://fl4gs.netlify.app/
 
 ## Information
 - Created at: [ETH Shanghai 2022 Hackathon](https://gitcoin.co/hackathon/ethshanghai?) 
+- Demo day video: [ETH Shanghai 2022 Hackathon Demo Video](https://youtu.be/Dbv87qXFmWM)
 - Slides: [Presentation Slides](https://drive.google.com/file/d/1qcS78KgnAwH2Ok_eynOlkeCHgZVS_q7I/view?usp=sharing)
 
 ## Incomplete Future developments
